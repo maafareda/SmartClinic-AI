@@ -1,3 +1,6 @@
+using System.Security.Cryptography;
+using System.Text;
+
 namespace SmartClinic.Domain;
 
 public enum AppointmentStatus
@@ -90,6 +93,7 @@ public sealed class Appointment
 {
     private readonly List<AppointmentTransition> _history = [];
     private readonly List<PaymentTransaction> _transactions = [];
+    private readonly byte[] _checkInCodeHash;
 
     public Guid Id { get; }
     public Guid ClinicId { get; }
@@ -106,7 +110,6 @@ public sealed class Appointment
     public DateTimeOffset? CheckedInAt { get; private set; }
     public DateTimeOffset? StartedAt { get; private set; }
     public DateTimeOffset? CompletedAt { get; private set; }
-    public string CheckInCode { get; }
     public string CheckInMethod { get; private set; } = "Code";
     public IReadOnlyList<AppointmentTransition> History => _history.AsReadOnly();
     public IReadOnlyList<PaymentTransaction> Transactions => _transactions.AsReadOnly();
@@ -145,7 +148,7 @@ public sealed class Appointment
         EndAt = startAt.AddMinutes(durationMinutes);
         ConsultationPrice = consultationPrice;
         DepositAmount = depositAmount;
-        CheckInCode = checkInCode;
+        _checkInCodeHash = SHA256.HashData(Encoding.UTF8.GetBytes(checkInCode));
     }
 
     public void ConfirmDeposit(DateTimeOffset now, string providerReference)
@@ -160,7 +163,8 @@ public sealed class Appointment
     {
         EnsureStatus(AppointmentStatus.Confirmed);
 
-        if (!string.Equals(CheckInCode, code, StringComparison.Ordinal))
+        var candidateHash = SHA256.HashData(Encoding.UTF8.GetBytes(code ?? string.Empty));
+        if (!CryptographicOperations.FixedTimeEquals(_checkInCodeHash, candidateHash))
         {
             throw new InvalidOperationException("Le code de check-in est invalide.");
         }

@@ -416,6 +416,20 @@
         "runtime": {
           "bin/placeholder/SmartClinic.Domain.dll": {}
         }
+      },
+      "SmartClinic.Infrastructure/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v10.0",
+        "dependencies": {
+          "SmartClinic.Application": "1.0.0",
+          "SmartClinic.Domain": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/SmartClinic.Infrastructure.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/SmartClinic.Infrastructure.dll": {}
+        }
       }
     }
   },
@@ -936,6 +950,11 @@
       "type": "project",
       "path": "../../src/SmartClinic.Domain/SmartClinic.Domain.csproj",
       "msbuildProject": "../../src/SmartClinic.Domain/SmartClinic.Domain.csproj"
+    },
+    "SmartClinic.Infrastructure/1.0.0": {
+      "type": "project",
+      "path": "../../src/SmartClinic.Infrastructure/SmartClinic.Infrastructure.csproj",
+      "msbuildProject": "../../src/SmartClinic.Infrastructure/SmartClinic.Infrastructure.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -943,6 +962,7 @@
       "Microsoft.NET.Test.Sdk >= 17.14.1",
       "SmartClinic.Application >= 1.0.0",
       "SmartClinic.Domain >= 1.0.0",
+      "SmartClinic.Infrastructure >= 1.0.0",
       "coverlet.collector >= 6.0.4",
       "xunit >= 2.9.3",
       "xunit.runner.visualstudio >= 3.1.4"
@@ -986,6 +1006,9 @@
             },
             "D:\\SmartClinic-AI\\src\\SmartClinic.Domain\\SmartClinic.Domain.csproj": {
               "projectPath": "D:\\SmartClinic-AI\\src\\SmartClinic.Domain\\SmartClinic.Domain.csproj"
+            },
+            "D:\\SmartClinic-AI\\src\\SmartClinic.Infrastructure\\SmartClinic.Infrastructure.csproj": {
+              "projectPath": "D:\\SmartClinic-AI\\src\\SmartClinic.Infrastructure\\SmartClinic.Infrastructure.csproj"
             }
           }
         }

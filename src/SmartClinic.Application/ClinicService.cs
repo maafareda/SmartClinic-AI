@@ -106,7 +106,7 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
         return slots;
     }
 
-    public AppointmentView CreateAppointment(Guid clinicId, CreateAppointmentCommand command, DateTimeOffset now)
+    public CreateAppointmentResult CreateAppointment(Guid clinicId, CreateAppointmentCommand command, DateTimeOffset now)
     {
         var clinic = EnsureClinic(clinicId);
         var doctor = repository.GetDoctor(clinicId, command.DoctorId)
@@ -154,7 +154,7 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
             throw new InvalidOperationException("Ce créneau vient d'être réservé par un autre patient.");
         }
 
-        return ToView(appointment);
+        return new CreateAppointmentResult(ToView(appointment), checkInCode);
     }
 
     public AppointmentView CheckIn(Guid clinicId, Guid appointmentId, string code, DateTimeOffset now)
@@ -315,7 +315,6 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
             appointment.RemainingAmount,
             appointment.Status,
             appointment.CheckedInAt,
-            appointment.CheckInCode,
             appointment.DepositForfeited);
     }
 

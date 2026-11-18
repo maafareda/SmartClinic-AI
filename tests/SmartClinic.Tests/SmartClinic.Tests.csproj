@@ -21,6 +21,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\SmartClinic.Application\SmartClinic.Application.csproj" />
     <ProjectReference Include="..\..\src\SmartClinic.Domain\SmartClinic.Domain.csproj" />
+    <ProjectReference Include="..\..\src\SmartClinic.Infrastructure\SmartClinic.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

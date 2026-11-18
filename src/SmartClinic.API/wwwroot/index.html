@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f7f8">
+  <meta name="description" content="SmartClinic AI — gestion des rendez-vous et de l'accueil médical.">
+  <title>SmartClinic AI — Espace cabinet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <a class="brand" href="/" aria-label="SmartClinic accueil">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+        <span class="brand-name">smartclinic<span>AI</span></span>
+      </a>
+      <div class="clinic-switcher">
+        <span class="clinic-avatar">CA</span>
+        <span class="clinic-label"><strong id="sidebar-clinic">Cabinet Atlas</strong><small>Centre médical</small></span>
+        <span class="switch-chevron" aria-hidden="true">⌄</span>
+      </div>
+      <div class="nav-caption">ESPACE CABINET</div>
+      <nav class="main-nav" aria-label="Navigation principale">
+        <button class="nav-item active" data-page="dashboard"><span class="nav-icon">⌂</span><span>Vue d'ensemble</span></button>
+        <button class="nav-item" data-page="appointments"><span class="nav-icon">▦</span><span>Rendez-vous</span><span class="nav-count" id="appointments-nav-count">0</span></button>
+        <button class="nav-item" data-page="queue"><span class="nav-icon">≋</span><span>File d'attente</span><span class="nav-dot"></span></button>
+        <button class="nav-item" data-page="requests"><span class="nav-icon">✳</span><span>Demandes patients</span><span class="nav-count warm" id="requests-nav-count">0</span></button>
+        <button class="nav-item" data-page="assistant"><span class="nav-icon">✦</span><span>Assistant IA</span></button>
+      </nav>
+      <div class="nav-caption tools-caption">GESTION</div>
+      <nav class="main-nav" aria-label="Outils du cabinet">
+        <button class="nav-item" data-page="doctors"><span class="nav-icon">♙</span><span>Équipe médicale</span></button>
+        <button class="nav-item" data-page="settings"><span class="nav-icon">⚙</span><span>Paramètres</span></button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="help-card"><span class="help-spark">✦</span><strong>Besoin d'aide ?</strong><p>Notre équipe est là pour vous accompagner.</p><button type="button" class="help-link" data-page="assistant">Contacter le support <span>↗</span></button></div>
+        <button class="profile-button" type="button">
+          <span class="profile-avatar">YB</span><span class="profile-name"><strong>Yasmine Bennani</strong><small>Administratrice</small></span><span class="profile-menu">···</span>
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-area">
+      <header class="topbar">
+        <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Ouvrir le menu">☰</button>
+        <div class="breadcrumb"><span>Cabinet</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Vue d'ensemble</strong></div>
+        <div class="topbar-actions">
+          <span class="live-status"><span class="live-pulse"></span>En direct</span>
+          <button class="icon-button language-button" id="language-toggle" type="button" title="Changer de langue">ع</button>
+          <button class="icon-button notification-button" type="button" aria-label="Notifications">♧<i></i></button>
+          <button class="topbar-profile" type="button"><span class="profile-avatar small">YB</span><span>Yasmine</span><span class="switch-chevron">⌄</span></button>
+        </div>
+      </header>
+
+      <div class="content">
+        <section class="page-section active" id="page-dashboard">
+          <div class="welcome-row">
+            <div><p class="eyebrow"><span class="eyebrow-line"></span><span id="eyebrow-date"></span></p><h1>Bonjour, Yasmine <span class="wave">✦</span></h1><p class="subtitle">Voici ce qui se passe dans votre cabinet aujourd'hui.</p></div>
+            <button class="button button-primary" id="new-appointment" type="button"><span class="button-plus">＋</span> Nouveau rendez-vous</button>
+          </div>
+          <div class="stat-grid">
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon mint">▦</span><span class="trend positive">+12,5% <span>↗</span></span></div><div class="stat-value" id="stat-appointments">—</div><div class="stat-label">Rendez-vous aujourd'hui</div><div class="stat-foot"><span class="tiny-dot mint-dot"></span> vs. semaine dernière</div><div class="sparkline mint-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon blue">≋</span><span class="trend neutral">En temps réel</span></div><div class="stat-value" id="stat-waiting">—</div><div class="stat-label">Patients en attente</div><div class="stat-foot"><span class="tiny-dot blue-dot"></span> dans la file d'attente</div><div class="sparkline blue-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon lilac">✳</span><span class="trend warm" id="request-trend">À traiter</span></div><div class="stat-value" id="stat-requests">—</div><div class="stat-label">Demandes à traiter</div><div class="stat-foot"><span class="tiny-dot lilac-dot"></span> transmises par l'assistant IA</div><div class="sparkline lilac-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+            <article class="stat-card"><div class="stat-top"><span class="stat-icon peach">↗</span><span class="trend positive">Aujourd'hui</span></div><div class="stat-value money-value" id="stat-revenue">—</div><div class="stat-label">Revenus encaissés</div><div class="stat-foot"><span class="tiny-dot peach-dot"></span> avances + consultations</div><div class="sparkline peach-line"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          </div>
+
+          <div class="dashboard-grid">
+            <section class="panel queue-panel">
+              <div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon blue">≋</span><h2>File d'attente</h2><span class="live-pill"><i></i> EN DIRECT</span></div><p class="panel-subtitle">Les patients du jour, par heure de rendez-vous</p></div><button class="text-link" data-page="queue" type="button">Voir la file <span>→</span></button></div>
+              <div class="table-wrap"><table><thead><tr><th>PATIENT</th><th>MÉDECIN</th><th>HEURE</th><th>STATUT</th><th></th></tr></thead><tbody id="queue-table"><tr><td colspan="5" class="empty-state">Chargement de la file…</td></tr></tbody></table></div>
+            </section>
+            <section class="panel requests-panel">
+              <div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon lilac">✳</span><h2>Demandes patients</h2></div><p class="panel-subtitle">Transmises par votre assistant IA</p></div><button class="icon-more" data-page="requests" type="button" aria-label="Toutes les demandes">···</button></div>
+              <div class="request-list" id="recent-requests"><div class="empty-state">Chargement des demandes…</div></div>
+              <button class="button button-light full-button" data-page="requests" type="button">Voir toutes les demandes <span>→</span></button>
+            </section>
+          </div>
+
+          <div class="bottom-grid">
+            <section class="panel schedule-panel">
+              <div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon mint">◷</span><h2>Votre journée</h2></div><p class="panel-subtitle" id="schedule-date">Planning des consultations</p></div><button class="icon-button subtle-button" type="button" aria-label="Calendrier">▦</button></div>
+              <div class="schedule-list" id="schedule-list"></div>
+            </section>
+            <section class="panel assistant-card">
+              <div class="assistant-orbit"><span>✦</span><i></i><b></b></div><div class="assistant-content"><span class="assistant-label">SMARTCLINIC AI</span><h2>Votre assistant<br>travaille pour vous.</h2><p>Vos patients reçoivent des réponses 24h/24. Les demandes importantes arrivent ici.</p><button class="button button-dark" data-page="assistant" type="button">Ouvrir l'assistant <span>→</span></button></div>
+            </section>
+          </div>
+        </section>
+
+        <section class="page-section" id="page-appointments">
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> ORGANISATION</p><h1>Rendez-vous</h1><p class="subtitle">Gérez les réservations et les passages au cabinet.</p></div><button class="button button-primary" id="new-appointment-secondary" type="button"><span class="button-plus">＋</span> Nouveau rendez-vous</button></div>
+          <section class="panel"><div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon mint">▦</span><h2>Tous les rendez-vous</h2></div><p class="panel-subtitle">Réservations de votre cabinet</p></div><span class="table-total" id="appointments-total">0 rendez-vous</span></div><div class="table-wrap"><table><thead><tr><th>PATIENT</th><th>MÉDECIN</th><th>DATE & HEURE</th><th>AVANCE</th><th>SOLDE</th><th>STATUT</th><th>ACTION</th></tr></thead><tbody id="appointments-table"></tbody></table></div></section>
+        </section>
+
+        <section class="page-section" id="page-queue">
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> TEMPS RÉEL</p><h1>File d'attente</h1><p class="subtitle">L'ordre de passage suit l'heure du rendez-vous, pas l'arrivée.</p></div><span class="live-status large-live"><span class="live-pulse"></span>Actualisation en direct</span></div>
+          <section class="panel"><div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon blue">≋</span><h2>Patients présents</h2></div><p class="panel-subtitle">File triée par heure de rendez-vous</p></div></div><div class="table-wrap"><table><thead><tr><th>ORDRE</th><th>PATIENT</th><th>MÉDECIN</th><th>HEURE DU RDV</th><th>ARRIVÉE</th><th>STATUT</th><th>ACTION</th></tr></thead><tbody id="full-queue-table"></tbody></table></div></section>
+        </section>
+
+        <section class="page-section" id="page-requests">
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> SERVICE PATIENT</p><h1>Demandes patients</h1><p class="subtitle">Les demandes transmises par l'assistant et vos canaux d'accueil.</p></div><span class="live-status"><span class="live-pulse"></span>Synchronisé</span></div>
+          <section class="panel"><div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon lilac">✳</span><h2>Boîte de réception</h2></div><p class="panel-subtitle">Chaque demande est isolée dans son cabinet.</p></div></div><div class="request-inbox" id="request-inbox"></div></section>
+        </section>
+
+        <section class="page-section" id="page-assistant">
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> ACCUEIL AUTOMATISÉ</p><h1>Assistant IA</h1><p class="subtitle">Répondez aux questions courantes et transmettez les demandes à l'accueil.</p></div><span class="ai-status"><i></i> Mode démonstration</span></div>
+          <div class="assistant-layout"><section class="panel chat-panel"><div class="chat-header"><div class="ai-avatar">✦</div><div><strong>Assistant SmartClinic</strong><small><i></i> Disponible · Français / English / العربية</small></div><span class="demo-badge">DÉMO</span></div><div class="chat-messages" id="chat-messages"><div class="chat-date">AUJOURD'HUI</div><div class="message-row"><span class="chat-avatar">✦</span><div class="message-bubble"><p>Bonjour ! Je peux répondre aux questions sur le cabinet et transmettre une demande à notre équipe d'accueil. Comment puis-je vous aider ?</p><time>À l'instant</time></div></div></div><form class="chat-composer" id="chat-form"><label class="sr-only" for="chat-input">Votre message</label><input id="chat-input" maxlength="1000" placeholder="Écrivez votre message…" autocomplete="off" required><select id="chat-language" aria-label="Langue"><option value="fr">FR</option><option value="ar">عربي</option><option value="en">EN</option></select><button type="submit" aria-label="Envoyer le message">↑</button></form><p class="chat-disclaimer">Cet assistant ne fournit pas de diagnostic médical. En cas d'urgence, contactez les services d'urgence locaux.</p></section><aside class="panel assistant-info"><span class="section-icon lilac">✦</span><h2>Un accueil toujours disponible.</h2><p>En mode démo, les questions générales reçoivent une réponse fixe. Les demandes d'annulation, de report et les urgences sont enregistrées pour l'équipe.</p><div class="info-divider"></div><strong>Garde-fous activés</strong><ul><li><span>✓</span> Aucune réponse de diagnostic</li><li><span>✓</span> Demande urgente prioritaire</li><li><span>✓</span> Aucune disponibilité inventée</li><li><span>✓</span> Transfert vers l'accueil</li></ul></aside></div>
+        </section>
+
+        <section class="page-section" id="page-doctors">
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> ÉQUIPE</p><h1>Équipe médicale</h1><p class="subtitle">Les praticiens et spécialités de ce cabinet.</p></div></div>
+          <div class="doctor-grid" id="doctor-grid"></div>
+        </section>
+
+        <section class="page-section" id="page-settings">
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> CONFIGURATION</p><h1>Paramètres</h1><p class="subtitle">Informations de démonstration du cabinet sélectionné.</p></div></div>
+          <section class="panel settings-panel" id="clinic-settings"></section>
+          <div class="notice-banner"><span>ⓘ</span><p>Cette version stocke les données de démonstration uniquement en mémoire. Ne saisissez aucune information réelle de patient.</p></div>
+        </section>
+        <footer class="footer"><span>© 2026 SmartClinic AI</span><span>Plateforme de démonstration · Données synthétiques</span><a href="/health">État du service ↗</a></footer>
+      </div>
+    </main>
+  </div>
+
+  <dialog class="booking-dialog" id="booking-dialog">
+    <form id="booking-form">
+      <div class="dialog-heading"><div><span class="section-icon mint">＋</span><h2>Nouveau rendez-vous</h2><p>Réservez un créneau pour un patient.</p></div><button class="dialog-close" type="button" data-close-dialog aria-label="Fermer">×</button></div>
+      <div class="form-grid"><label>Prénom<input name="firstName" required maxlength="80" autocomplete="given-name" placeholder="ex. Salma"></label><label>Nom<input name="lastName" required maxlength="80" autocomplete="family-name" placeholder="ex. Amrani"></label><label class="form-wide">Téléphone<input name="phone" required maxlength="30" autocomplete="tel" placeholder="+212 6 …"></label><label class="form-wide">Médecin<select name="doctorId" id="doctor-select" required></select></label><label class="form-wide">Date<input name="date" id="appointment-date" type="date" required></label></div>
+      <div class="slot-heading"><strong>Créneaux disponibles</strong><span>10 minutes par consultation</span></div><div class="slot-list" id="slot-list"><span class="slot-placeholder">Choisissez une date pour afficher les disponibilités.</span></div>
+      <input type="hidden" name="startAt" id="selected-slot">
+      <div class="deposit-note"><span>◈</span><p><strong>Avance simulée</strong><br>Un montant de 50 DH sera indiqué comme payé. Aucun paiement réel n'est effectué.</p></div>
+      <div class="dialog-actions"><button class="button button-light" type="button" data-close-dialog>Annuler</button><button class="button button-primary" id="booking-submit" type="submit" disabled>Confirmer le rendez-vous <span>→</span></button></div>
+    </form>
+  </dialog>
+
+  <dialog class="code-dialog" id="code-dialog"><form method="dialog"><button class="dialog-close" aria-label="Fermer">×</button><span class="code-success">✓</span><p class="eyebrow centered">RENDEZ-VOUS CONFIRMÉ</p><h2>Code de check-in</h2><p>À communiquer uniquement au patient pour son arrivée au cabinet.</p><output id="booking-code">••••••</output><small>Avance simulée · aucun paiement réel</small><button class="button button-primary code-close" type="submit">Terminé</button></form></dialog>
+  <div class="toast-region" id="toast-region" aria-live="polite"></div>
+  <script src="/app.js" defer></script>
+</body>
+</html>

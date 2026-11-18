@@ -34,8 +34,9 @@ public sealed record AppointmentView(
     decimal RemainingAmount,
     AppointmentStatus Status,
     DateTimeOffset? CheckedInAt,
-    string CheckInCode,
     bool DepositForfeited);
+
+public sealed record CreateAppointmentResult(AppointmentView Appointment, string CheckInCode);
 
 public sealed record PatientRequestView(
     Guid Id,
@@ -84,7 +85,7 @@ public interface IClinicService
     IReadOnlyList<AppointmentView> GetQueue(Guid clinicId);
     IReadOnlyList<PatientRequestView> GetRequests(Guid clinicId);
     IReadOnlyList<AvailableSlot> GetAvailableSlots(Guid clinicId, Guid doctorId, DateOnly date, DateTimeOffset now);
-    AppointmentView CreateAppointment(Guid clinicId, CreateAppointmentCommand command, DateTimeOffset now);
+    CreateAppointmentResult CreateAppointment(Guid clinicId, CreateAppointmentCommand command, DateTimeOffset now);
     AppointmentView CheckIn(Guid clinicId, Guid appointmentId, string code, DateTimeOffset now);
     AppointmentView CheckInManually(Guid clinicId, Guid appointmentId, string reason, DateTimeOffset now);
     AppointmentView StartConsultation(Guid clinicId, Guid appointmentId, DateTimeOffset now);

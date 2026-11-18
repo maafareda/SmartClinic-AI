@@ -169,4 +169,4 @@ public sealed record ManualCheckInCommand(string Reason);
 public sealed record UpdateRequestCommand(RequestStatus Status, string? ResolutionNote);
 public sealed record ChatReply(string Reply, Guid? RequestId, string Intent);
 
-public partial class Program;
+public partial class Program { }

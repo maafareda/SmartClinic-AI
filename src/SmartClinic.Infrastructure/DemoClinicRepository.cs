@@ -202,26 +202,30 @@ public sealed class DemoClinicRepository : IClinicRepository
         {
             _patients.AddRange(patients);
 
-            var waiting = CreateSeedAppointment(clinic, doctor, patients[0], startAt, 0);
+            const string waitingCode = "000001";
+            var waiting = CreateSeedAppointment(clinic, doctor, patients[0], startAt, waitingCode);
             waiting.ConfirmDeposit(startAt.AddMinutes(-20), $"SEED-{Guid.NewGuid():N}");
-            waiting.CheckIn(startAt.AddMinutes(-10), waiting.CheckInCode,
+            waiting.CheckIn(startAt.AddMinutes(-10), waitingCode,
                 clinic.Settings.CheckInOpensMinutesBefore, clinic.Settings.LateToleranceMinutes);
             _appointments.Add(waiting);
 
-            var next = CreateSeedAppointment(clinic, doctor, patients[1], startAt.AddMinutes(10), 1);
+            const string nextCode = "000002";
+            var next = CreateSeedAppointment(clinic, doctor, patients[1], startAt.AddMinutes(10), nextCode);
             next.ConfirmDeposit(startAt.AddMinutes(-10), $"SEED-{Guid.NewGuid():N}");
-            next.CheckIn(startAt, next.CheckInCode,
+            next.CheckIn(startAt, nextCode,
                 clinic.Settings.CheckInOpensMinutesBefore, clinic.Settings.LateToleranceMinutes);
             _appointments.Add(next);
 
-            var inConsultation = CreateSeedAppointment(clinic, doctor, patients[2], startAt.AddMinutes(20), 2);
+            const string inConsultationCode = "000003";
+            var inConsultation = CreateSeedAppointment(clinic, doctor, patients[2], startAt.AddMinutes(20), inConsultationCode);
             inConsultation.ConfirmDeposit(startAt, $"SEED-{Guid.NewGuid():N}");
-            inConsultation.CheckIn(startAt.AddMinutes(10), inConsultation.CheckInCode,
+            inConsultation.CheckIn(startAt.AddMinutes(10), inConsultationCode,
                 clinic.Settings.CheckInOpensMinutesBefore, clinic.Settings.LateToleranceMinutes);
             inConsultation.StartConsultation(startAt.AddMinutes(20));
             _appointments.Add(inConsultation);
 
-            var noShow = CreateSeedAppointment(clinic, doctor, patients[3], startAt.AddMinutes(30), 3);
+            const string noShowCode = "000004";
+            var noShow = CreateSeedAppointment(clinic, doctor, patients[3], startAt.AddMinutes(30), noShowCode);
             noShow.ConfirmDeposit(startAt.AddMinutes(10), $"SEED-{Guid.NewGuid():N}");
             noShow.TryMarkNoShow(startAt.AddMinutes(36), clinic.Settings.LateToleranceMinutes);
             _appointments.Add(noShow);
@@ -233,9 +237,9 @@ public sealed class DemoClinicRepository : IClinicRepository
         Doctor doctor,
         Patient patient,
         DateTimeOffset startAt,
-        int index) =>
+        string code) =>
         new(Guid.NewGuid(), clinic.Id, patient.Id, doctor.Id, startAt, doctor.SlotDurationMinutes,
-            doctor.ConsultationPrice, clinic.Settings.DepositAmount, (index + 1).ToString("D6"));
+            doctor.ConsultationPrice, clinic.Settings.DepositAmount, code);
 
     private void SeedRequests()
     {
