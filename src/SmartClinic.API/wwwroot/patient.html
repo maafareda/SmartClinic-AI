@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8f6">
+  <meta name="description" content="Choisissez votre médecin et réservez un rendez-vous en ligne avec SmartClinic AI.">
+  <title>Prendre rendez-vous — SmartClinic AI</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body class="patient-body">
+  <div class="patient-page">
+    <header class="patient-header">
+      <a class="brand" href="/" aria-label="SmartClinic AI, accueil">
+        <span class="brand-mark" aria-hidden="true"><span></span><span></span></span>
+        <span class="brand-name">smartclinic<span>AI</span></span>
+      </a>
+      <a class="reception-link" href="/">Espace réceptionniste <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <main class="patient-main">
+      <section class="patient-hero">
+        <div>
+          <p class="eyebrow"><span class="eyebrow-line"></span> RÉSERVATION EN LIGNE</p>
+          <h1>Votre santé, à votre rythme.</h1>
+          <p class="subtitle">Choisissez un cabinet, un médecin et un créneau disponible. Votre demande est confirmée en quelques instants.</p>
+        </div>
+        <div class="patient-availability"><span class="live-pulse"></span> Disponibilités mises à jour en temps réel</div>
+      </section>
+
+      <div class="patient-layout">
+        <section class="patient-booking-card" aria-labelledby="booking-title">
+          <form id="patient-booking-form">
+            <h2 id="booking-title">Prendre rendez-vous</h2>
+            <p class="patient-card-intro">Les informations suivantes sont nécessaires pour confirmer votre réservation.</p>
+            <div class="patient-form-grid">
+              <label class="patient-field full" for="patient-clinic">Cabinet
+                <select id="patient-clinic" name="clinicId" required></select>
+              </label>
+              <label class="patient-field full" for="patient-doctor">Médecin
+                <select id="patient-doctor" name="doctorId" required></select>
+              </label>
+              <label class="patient-field full" for="patient-date">Date souhaitée
+                <input id="patient-date" name="date" type="date" required>
+                <small>Les disponibilités sont proposées pour les 30 prochains jours.</small>
+              </label>
+            </div>
+
+            <div class="patient-section-title"><span>◷</span>Choisissez un horaire</div>
+            <div class="patient-slot-list" id="patient-slot-list" aria-live="polite">
+              <span class="slot-placeholder">Choisissez un médecin et une date.</span>
+            </div>
+            <input id="patient-selected-slot" name="startAt" type="hidden" required>
+
+            <div class="patient-section-title"><span>♙</span>Vos coordonnées</div>
+            <div class="patient-form-grid">
+              <label class="patient-field" for="patient-first-name">Prénom
+                <input id="patient-first-name" name="firstName" required maxlength="80" autocomplete="given-name" placeholder="Votre prénom">
+              </label>
+              <label class="patient-field" for="patient-last-name">Nom
+                <input id="patient-last-name" name="lastName" required maxlength="80" autocomplete="family-name" placeholder="Votre nom">
+              </label>
+              <label class="patient-field full" for="patient-phone">Téléphone
+                <input id="patient-phone" name="phone" type="tel" required maxlength="30" autocomplete="tel" placeholder="+212 6 …">
+                <small>Utilisé par le cabinet pour vous contacter au sujet du rendez-vous.</small>
+              </label>
+            </div>
+
+            <div class="patient-deposit-note"><span aria-hidden="true">◈</span><p><strong>Avance de réservation simulée</strong><br>Une avance peut apparaître dans le récapitulatif du cabinet. Aucun paiement réel n'est effectué sur ce site de démonstration.</p></div>
+            <button class="button button-primary patient-submit" id="patient-submit" type="submit" disabled>Confirmer mon rendez-vous <span aria-hidden="true">→</span></button>
+            <p class="patient-disclaimer">Ce service de démonstration ne traite pas de données médicales réelles. En cas d'urgence, contactez les services d'urgence locaux.</p>
+            <p class="patient-error" id="patient-error" role="alert" hidden></p>
+          </form>
+
+          <section class="booking-success" id="booking-success" aria-live="polite" hidden>
+            <span class="booking-success-icon" aria-hidden="true">✓</span>
+            <p class="eyebrow centered">RENDEZ-VOUS CONFIRMÉ</p>
+            <h2>Votre réservation est confirmée.</h2>
+            <p>Présentez-vous au cabinet à l'heure prévue. Gardez votre code de check-in pour votre arrivée.</p>
+            <div class="patient-confirmation-details">
+              <div><span>Cabinet</span><strong id="confirmation-clinic"></strong></div>
+              <div><span>Médecin</span><strong id="confirmation-doctor"></strong></div>
+              <div><span>Date et heure</span><strong id="confirmation-date"></strong></div>
+              <div><span>Avance (simulation)</span><strong id="confirmation-deposit"></strong></div>
+            </div>
+            <p class="patient-code-label">Votre code de check-in</p>
+            <output class="patient-checkin-code" id="patient-checkin-code"></output>
+            <small class="patient-code-warning">Conservez ce code et communiquez-le uniquement à l'accueil du cabinet.</small>
+            <button class="button button-light patient-new-booking" id="patient-new-booking" type="button">Prendre un autre rendez-vous</button>
+          </section>
+        </section>
+
+        <aside class="patient-aside">
+          <section class="patient-aside-card">
+            <h2 id="patient-clinic-name">Votre cabinet</h2>
+            <p>Les informations du cabinet sélectionné.</p>
+            <div class="patient-clinic-details">
+              <div class="patient-clinic-detail"><span aria-hidden="true">⌖</span><span id="patient-clinic-address">Chargement…</span></div>
+              <div class="patient-clinic-detail"><span aria-hidden="true">☎</span><a id="patient-clinic-phone" class="reception-link" href="#"></a></div>
+            </div>
+          </section>
+          <section class="patient-aside-card">
+            <h2>Comment ça marche ?</h2>
+            <div class="patient-steps">
+              <div class="patient-step"><span class="patient-step-number">1</span><div><strong>Choisissez votre créneau</strong><p>Les horaires affichés correspondent aux disponibilités du médecin.</p></div></div>
+              <div class="patient-step"><span class="patient-step-number">2</span><div><strong>Renseignez vos coordonnées</strong><p>Le cabinet pourra vous joindre pour toute précision.</p></div></div>
+              <div class="patient-step"><span class="patient-step-number">3</span><div><strong>Gardez votre confirmation</strong><p>Votre code de check-in s'affichera après la réservation.</p></div></div>
+            </div>
+          </section>
+          <div class="patient-demo-note">Prototype de démonstration : les réservations sont conservées en mémoire et réinitialisées au redémarrage du service. N'utilisez pas de vraies informations personnelles.</div>
+        </aside>
+      </div>
+
+      <footer class="patient-footer"><span>© 2026 SmartClinic AI</span><span>Plateforme de démonstration · Données synthétiques</span><a href="/health">État du service ↗</a></footer>
+    </main>
+  </div>
+  <script src="/patient.js" defer></script>
+</body>
+</html>

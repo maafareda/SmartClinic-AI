@@ -39,6 +39,7 @@ app.Use(async (context, next) =>
 app.UseDefaultFiles();
 app.UseStaticFiles();
 
+app.MapGet("/patient", () => Results.Redirect("/patient.html"));
 app.MapGet("/health", () => Results.Ok(new { status = "ok", mode = "demo" }));
 app.MapGet("/api/clinics", (IClinicService service) => Results.Ok(service.GetClinics()));
 
