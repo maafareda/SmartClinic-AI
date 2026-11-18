@@ -62,7 +62,8 @@ clinicApi.MapPost("/appointments", (
     IClinicService service) =>
 {
     var appointment = service.CreateAppointment(clinicId, command, DateTimeOffset.UtcNow);
-    return Results.Created($"/api/clinics/{clinicId}/appointments/{appointment.Id}", appointment);
+    return Results.Created(
+        $"/api/clinics/{clinicId}/appointments/{appointment.Appointment.Id}", appointment);
 });
 clinicApi.MapPost("/appointments/{appointmentId:guid}/check-in", (
     Guid clinicId,
