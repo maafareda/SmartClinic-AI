@@ -6,9 +6,6 @@
   <meta name="theme-color" content="#f5f7f8">
   <meta name="description" content="SmartClinic AI — gestion des rendez-vous et de l'accueil médical.">
   <title>SmartClinic AI — Espace cabinet</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -49,7 +46,7 @@
         <button class="mobile-menu" id="mobile-menu" type="button" aria-label="Ouvrir le menu">☰</button>
         <div class="breadcrumb"><span>Cabinet</span><span class="crumb-slash">/</span><strong id="breadcrumb-current">Vue d'ensemble</strong></div>
         <div class="topbar-actions">
-          <span class="live-status"><span class="live-pulse"></span>En direct</span>
+          <span class="live-status"><span class="live-pulse"></span>Actualisé toutes les 15 s</span>
           <button class="icon-button language-button" id="language-toggle" type="button" title="Changer de langue">ع</button>
           <button class="icon-button notification-button" type="button" aria-label="Notifications">♧<i></i></button>
           <button class="topbar-profile" type="button"><span class="profile-avatar small">YB</span><span>Yasmine</span><span class="switch-chevron">⌄</span></button>
@@ -71,7 +68,7 @@
 
           <div class="dashboard-grid">
             <section class="panel queue-panel">
-              <div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon blue">≋</span><h2>File d'attente</h2><span class="live-pill"><i></i> EN DIRECT</span></div><p class="panel-subtitle">Les patients du jour, par heure de rendez-vous</p></div><button class="text-link" data-page="queue" type="button">Voir la file <span>→</span></button></div>
+              <div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon blue">≋</span><h2>File d'attente</h2><span class="live-pill"><i></i> AUTO · 15 S</span></div><p class="panel-subtitle">Les patients du jour, par heure de rendez-vous</p></div><button class="text-link" data-page="queue" type="button">Voir la file <span>→</span></button></div>
               <div class="table-wrap"><table><thead><tr><th>PATIENT</th><th>MÉDECIN</th><th>HEURE</th><th>STATUT</th><th></th></tr></thead><tbody id="queue-table"><tr><td colspan="5" class="empty-state">Chargement de la file…</td></tr></tbody></table></div>
             </section>
             <section class="panel requests-panel">
@@ -87,7 +84,7 @@
               <div class="schedule-list" id="schedule-list"></div>
             </section>
             <section class="panel assistant-card">
-              <div class="assistant-orbit"><span>✦</span><i></i><b></b></div><div class="assistant-content"><span class="assistant-label">SMARTCLINIC AI</span><h2>Votre assistant<br>travaille pour vous.</h2><p>Vos patients reçoivent des réponses 24h/24. Les demandes importantes arrivent ici.</p><button class="button button-dark" data-page="assistant" type="button">Ouvrir l'assistant <span>→</span></button></div>
+              <div class="assistant-orbit"><span>✦</span><i></i><b></b></div><div class="assistant-content"><span class="assistant-label">SMARTCLINIC AI · DÉMO</span><h2>Un accueil mieux<br>organisé.</h2><p>Les questions générales et demandes urgentes sont traitées dans ce prototype local.</p><button class="button button-dark" data-page="assistant" type="button">Ouvrir l'assistant <span>→</span></button></div>
             </section>
           </div>
         </section>
@@ -98,12 +95,12 @@
         </section>
 
         <section class="page-section" id="page-queue">
-          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> TEMPS RÉEL</p><h1>File d'attente</h1><p class="subtitle">L'ordre de passage suit l'heure du rendez-vous, pas l'arrivée.</p></div><span class="live-status large-live"><span class="live-pulse"></span>Actualisation en direct</span></div>
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> SUIVI AUTOMATISÉ</p><h1>File d'attente</h1><p class="subtitle">L'ordre de passage suit l'heure du rendez-vous, pas l'arrivée.</p></div><span class="live-status large-live"><span class="live-pulse"></span>Actualisation toutes les 15 s</span></div>
           <section class="panel"><div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon blue">≋</span><h2>Patients présents</h2></div><p class="panel-subtitle">File triée par heure de rendez-vous</p></div></div><div class="table-wrap"><table><thead><tr><th>ORDRE</th><th>PATIENT</th><th>MÉDECIN</th><th>HEURE DU RDV</th><th>ARRIVÉE</th><th>STATUT</th><th>ACTION</th></tr></thead><tbody id="full-queue-table"></tbody></table></div></section>
         </section>
 
         <section class="page-section" id="page-requests">
-          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> SERVICE PATIENT</p><h1>Demandes patients</h1><p class="subtitle">Les demandes transmises par l'assistant et vos canaux d'accueil.</p></div><span class="live-status"><span class="live-pulse"></span>Synchronisé</span></div>
+          <div class="page-heading"><div><p class="eyebrow"><span class="eyebrow-line"></span> SERVICE PATIENT</p><h1>Demandes patients</h1><p class="subtitle">Les demandes transmises par l'assistant et vos canaux d'accueil.</p></div><span class="live-status"><span class="live-pulse"></span>Actualisé automatiquement</span></div>
           <section class="panel"><div class="panel-heading"><div><div class="title-with-icon"><span class="section-icon lilac">✳</span><h2>Boîte de réception</h2></div><p class="panel-subtitle">Chaque demande est isolée dans son cabinet.</p></div></div><div class="request-inbox" id="request-inbox"></div></section>
         </section>
 
