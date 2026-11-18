@@ -189,8 +189,14 @@ public sealed class DemoClinicRepository : IClinicRepository
 
     private void SeedClinicAppointments(Clinic clinic, Doctor doctor)
     {
-        var date = DateOnly.FromDateTime(DateTime.UtcNow);
-        var startAt = new DateTimeOffset(date.ToDateTime(new TimeOnly(9, 0)), TimeSpan.FromHours(1));
+        var zoneId = TimeZoneInfo.TryConvertIanaIdToWindowsId(clinic.Timezone, out var windowsTimeZoneId)
+            ? windowsTimeZoneId
+            : clinic.Timezone;
+        var timeZone = TimeZoneInfo.FindSystemTimeZoneById(zoneId);
+        var clinicNow = TimeZoneInfo.ConvertTime(DateTimeOffset.UtcNow, timeZone);
+        var date = DateOnly.FromDateTime(clinicNow.Date);
+        var localStart = DateTime.SpecifyKind(date.ToDateTime(new TimeOnly(9, 0)), DateTimeKind.Unspecified);
+        var startAt = new DateTimeOffset(localStart, timeZone.GetUtcOffset(localStart));
         var patients = new[]
         {
             new Patient(Guid.NewGuid(), clinic.Id, "Salma", "Amrani", "+212 6 12 34 56 01", "fr", DateTimeOffset.UtcNow),

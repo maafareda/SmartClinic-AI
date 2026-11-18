@@ -58,4 +58,21 @@ public sealed class ClinicServiceTests
         Assert.Throws<KeyNotFoundException>(() =>
             service.StartConsultation(DemoIds.ClinicRiad, appointment.Id, DateTimeOffset.UtcNow));
     }
+
+    [Fact]
+    public void AvailableSlots_UseCasablancaLocalTimeAndOffset()
+    {
+        var service = new ClinicService(new DemoClinicRepository());
+        var clinicTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Morocco Standard Time");
+        var now = new DateTimeOffset(2026, 11, 18, 8, 0, 0, TimeSpan.Zero);
+        var slots = service.GetAvailableSlots(
+            DemoIds.ClinicAtlas,
+            DemoIds.DoctorAtlas,
+            new DateOnly(2026, 11, 19),
+            now);
+
+        Assert.NotEmpty(slots);
+        Assert.Equal(new TimeOnly(9, 0), TimeOnly.FromDateTime(slots[0].StartAt.DateTime));
+        Assert.Equal(clinicTimeZone.GetUtcOffset(new DateTime(2026, 11, 19, 9, 0, 0)), slots[0].StartAt.Offset);
+    }
 }

@@ -15,10 +15,11 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
 
     public DashboardView GetDashboard(Guid clinicId, DateTimeOffset now)
     {
-        EnsureClinic(clinicId);
+        var clinic = EnsureClinic(clinicId);
         var appointments = repository.GetAppointments(clinicId);
         var requests = repository.GetRequests(clinicId);
-        var todaysAppointments = appointments.Where(item => item.StartAt.Date == now.Date).ToArray();
+        var localDate = TimeZoneInfo.ConvertTime(now, ResolveTimeZone(clinic.Timezone)).Date;
+        var todaysAppointments = appointments.Where(item => item.StartAt.Date == localDate).ToArray();
 
         return new DashboardView(
             todaysAppointments.Length,
@@ -42,11 +43,12 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
 
     public IReadOnlyList<AppointmentView> GetQueue(Guid clinicId)
     {
-        EnsureClinic(clinicId);
+        var clinic = EnsureClinic(clinicId);
         var now = DateTimeOffset.UtcNow;
+        var localDate = TimeZoneInfo.ConvertTime(now, ResolveTimeZone(clinic.Timezone)).Date;
         return repository.GetAppointments(clinicId)
             .Where(item => item.Status is AppointmentStatus.Waiting or AppointmentStatus.InProgress)
-            .Where(item => item.StartAt.Date == now.Date)
+            .Where(item => item.StartAt.Date == localDate)
             .OrderBy(item => item.StartAt)
             .Select(ToView)
             .ToArray();
@@ -70,7 +72,11 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
         var clinic = EnsureClinic(clinicId);
         var doctor = repository.GetDoctor(clinicId, doctorId)
             ?? throw new KeyNotFoundException("Médecin introuvable dans ce cabinet.");
-        if (!doctor.IsActive || date < DateOnly.FromDateTime(now.Date) || date > DateOnly.FromDateTime(now.AddDays(30).Date))
+        var timeZone = ResolveTimeZone(clinic.Timezone);
+        var localNow = TimeZoneInfo.ConvertTime(now, timeZone);
+        if (!doctor.IsActive ||
+            date < DateOnly.FromDateTime(localNow.Date) ||
+            date > DateOnly.FromDateTime(localNow.AddDays(30).Date))
         {
             return [];
         }
@@ -92,7 +98,13 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
             var end = date.ToDateTime(period.End);
             for (var candidate = start; candidate.AddMinutes(slotDuration) <= end; candidate = candidate.AddMinutes(slotDuration))
             {
-                var startAt = new DateTimeOffset(candidate, TimeSpan.FromHours(1));
+                var localCandidate = DateTime.SpecifyKind(candidate, DateTimeKind.Unspecified);
+                if (timeZone.IsInvalidTime(localCandidate))
+                {
+                    continue;
+                }
+
+                var startAt = new DateTimeOffset(localCandidate, timeZone.GetUtcOffset(localCandidate));
                 var endAt = startAt.AddMinutes(slotDuration);
                 if (startAt <= now || occupied.Any(item => item.StartAt < endAt && item.EndAt > startAt))
                 {
@@ -271,6 +283,14 @@ public sealed class ClinicService(IClinicRepository repository) : IClinicService
 
     private Clinic EnsureClinic(Guid clinicId) =>
         repository.GetClinic(clinicId) ?? throw new KeyNotFoundException("Cabinet introuvable.");
+
+    private static TimeZoneInfo ResolveTimeZone(string ianaTimeZone)
+    {
+        var timeZoneId = TimeZoneInfo.TryConvertIanaIdToWindowsId(ianaTimeZone, out var windowsTimeZoneId)
+            ? windowsTimeZoneId
+            : ianaTimeZone;
+        return TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
+    }
 
     private Appointment UpdateAppointment(Guid clinicId, Guid appointmentId, Func<Appointment, bool> update)
     {
