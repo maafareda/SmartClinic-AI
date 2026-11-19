@@ -3,3 +3,5 @@ cd D:\SmartClinic-AI
 dotnet --version
 
 dotnet run --project src\SmartClinic.API
+
+http://localhost:5106
