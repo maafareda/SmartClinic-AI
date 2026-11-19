@@ -15,4 +15,4 @@ http://localhost:5106
 
 	- Patient :
 
-http://localhost:5106/patient
+http://localhost:5106/patient 
