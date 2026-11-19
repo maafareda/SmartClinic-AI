@@ -10,7 +10,7 @@ dotnet run --project src\SmartClinic.API
 	- receptionists :
 
 http://localhost:5106
-
+ 
 
 
 	- Patient :
