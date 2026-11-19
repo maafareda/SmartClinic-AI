@@ -1,1 +1,3 @@
 cd D:\SmartClinic-AI
+
+dotnet --version
